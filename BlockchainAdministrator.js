@@ -5,7 +5,7 @@ const blockchain = [genesisBlock]
 const getLatestBlock = () => blockchain[blockchain.length - 1]
 
 const isValidChain = blockchainToValidate => {
-  if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(genesisBlock) {
+  if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(genesisBlock)) {
     return false
   }
 
