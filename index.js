@@ -1,11 +1,14 @@
-const Blockchain = require('./Blockchain')
-const Server = require('./Server')
+const Peer = require('./Peer')
+const P2PServer = require('./P2PServer')
+const HTTPServer = require('./HTTPServer')
 
-const HTTPPort = process.env.HTTP_PORT || 3001
-const P2PPort = process.env.P2P_PORT || 6001
-const initialPeers = process.env.PEERS ? process.env.PEERS.split(',') : []
+const INITIAL_PEERS = process.env.PEERS ? process.env.PEERS.split(',') : []
+const HTTP_PORT = process.env.HTTP_PORT || 3001
+const P2P_PORT = process.env.P2P_PORT || 6001
 
-const blockchain = new Blockchain()
-const server = new Server(HTTPPort, P2PPort, blockchain)
+Peer.connectToPeers(INITIAL_PEERS)
+const p2pserver = new P2PServer(P2P_PORT)
+const httpServer = new HTTPServer(HTTP_PORT, p2pserver.sockets)
 
-server.start()
+p2pserver.start()
+httpServer.start()
