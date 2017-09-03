@@ -5,14 +5,17 @@ const blockchain = [genesisBlock]
 const getLatestBlock = () => blockchain[blockchain.length - 1]
 
 const isValidChain = blockchainToValidate => {
+  // If first block is not Genesis block
   if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(genesisBlock)) {
     return false
   }
 
+  // Array with Genesis block only
   const tempBlocks = [blockchainToValidate[0]]
 
-  for (const i = 1; i < blockchainToValidate.length; i++) {
-    if (isValidNewBlock(blockchainToValidate[i], tempBlocks[i - 1])) {
+  // Validate current block with previous block
+  for (let i = 1; i < blockchainToValidate.length; i++) {
+    if (Block.isValidNewBlock(blockchainToValidate[i], tempBlocks[i - 1])) {
       tempBlocks.push(blockchainToValidate[i])
     } else {
       return false
@@ -54,5 +57,7 @@ module.exports = {
   addBlock,
   blockchain,
   generateNextBlock,
-  getLatestBlock
+  genesisBlock,
+  getLatestBlock,
+  isValidChain
 }

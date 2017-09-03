@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const BlockchainAdministrator = require('./BlockchainAdministrator')
+const Core = require('./Core')
 const Peer = require('./Peer')
 
 module.exports = class HTTPServer {
@@ -10,13 +10,13 @@ module.exports = class HTTPServer {
     this.app = express()
     this.app.use(bodyParser.json())
 
-    this.app.get('/blocks', (req, res) => res.send(JSON.stringify(BlockchainAdministrator.blockchain)))
+    this.app.get('/blocks', (req, res) => res.send(JSON.stringify(Core.blockchain)))
 
     this.app.post('/mine', (req, res) => {
-      const newBlock = BlockchainAdministrator.generateNextBlock(req.body.data)
+      const newBlock = Core.generateNextBlock(req.body.data)
 
-      BlockchainAdministrator.addBlock(newBlock)
-      P2PServer.broadcast(BlockchainAdministrator.responseLatestMsg())
+      Core.addBlock(newBlock)
+      P2PServer.broadcast(Core.responseLatestMsg())
       console.log(`Block added: ${JSON.stringify(newBlock)}`)
       res.send()
     })
