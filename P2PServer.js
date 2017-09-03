@@ -13,11 +13,7 @@ module.exports = class P2PServer {
     server.on('connection', ws => Peer.initConnection(ws))
   }
 
-  write (ws, message) {
-    ws.send(JSON.stringify(message))
-  }
-
-  static broadcast (message) {
-    this.sockets.forEach(socket => write(socket, message))
+  static broadcast (msg) {
+    this.sockets.forEach(socket => socket.send(JSON.stringify(msg)))
   }
 }

@@ -1,16 +1,16 @@
 const WebSocket = require('ws')
 
-const messagesTypes = {
+const msgTypes = {
   QUERY_LATEST: 0,
   QUERY_ALL: 1,
   RESPONSE_BLOCKCHAIN: 2
 }
 
-const queryAllMsg = () => ({ type: messagesTypes.QUERY_ALL })
-const queryChainLengthMsg = () => ({ type: messagesTypes.QUERY_LATEST })
+const queryAllMsg = () => ({ type: msgTypes.QUERY_ALL })
+const queryChainLengthMsg = () => ({ type: msgTypes.QUERY_LATEST })
 
 const responseChainMsg = () => ({
-  type: messagesTypes.RESPONSE_BLOCKCHAIN,
+  type: msgTypes.RESPONSE_BLOCKCHAIN,
   data: JSON.stringify(blockchain)
 })
 
@@ -28,7 +28,7 @@ const connectToPeers = newPeers => {
 }
 
 const responseLatestMsg = () => ({
-  type: messagesTypes.RESPONSE_BLOCKCHAIN,
+  type: msgTypes.RESPONSE_BLOCKCHAIN,
   data: JSON.stringify([getLatestBlock()])
 })
 
@@ -38,13 +38,13 @@ const initMessageHandler = ws => {
     console.log(`Received message ${JSON.stringify(message)}`)
 
     switch (message.type) {
-      case messagesTypes.QUERY_LATEST:
+      case msgTypes.QUERY_LATEST:
         write(ws, responseLatestMsg())
         break
-      case messagesTypes.QUERY_ALL:
+      case msgTypes.QUERY_ALL:
         write(ws, responseChainMsg())
         break
-      case messagesTypes.RESPONSE_BLOCKCHAIN:
+      case msgTypes.RESPONSE_BLOCKCHAIN:
         handleBlockchainResponse(message)
         break
     }
