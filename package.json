@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "node index.js",
-    "test": "ava tests"
+    "test": "ava"
   },
   "dependencies": {
     "body-parser": "^1.17.2",

@@ -1,7 +1,7 @@
 import test from 'ava'
 
-const Core = require('../Core')
-const Block = require('../Block')
+const Block = require('../../Block')
+const Core = require('../../Core')
 
 const index = 1
 const previousHash = '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7'
@@ -26,10 +26,7 @@ test('isValidChain success with Genesis block in blockchain', t => {
   t.true(isValid)
 })
 
-// TODO: success with Genesis block first and then valid block
 test('isValidChain success with valid block in blockchain', t => {
-  // const genesisBlock = Core.genesisBlock
-  // const blockchain = [genesisBlock]
   const blockchain = Core.blockchain
 
   Core.addBlock(block)
@@ -64,22 +61,3 @@ test('isValidChain fails without valid block', t => {
 
   t.false(isValid)
 }, block, invalidBlock)
-
-test('addBlock success to add block with valid block', t => {
-  Core.addBlock(block)
-
-  const expectedBlock = block
-  const actualBlock = Core.getLatestBlock()
-
-  t.is(expectedBlock, actualBlock)
-}, block)
-
-test('addBlock fails to add block with unvalid block', t => {
-  const expectedBlockchainSize = Core.blockchain.length
-
-  Core.addBlock(invalidBlock)
-
-  const actualBlockchainSize = Core.blockchain.length
-
-  t.is(expectedBlockchainSize, actualBlockchainSize)
-}, invalidBlock)

@@ -25,6 +25,12 @@ const isValidChain = blockchainToValidate => {
   return true
 }
 
+const addBlock = newBlock => {
+  if (Block.isValidNewBlock(newBlock, getLatestBlock())) {
+    blockchain.push(newBlock)
+  }
+}
+
 const mustReplaceChain = newBlocks => {
   if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
     console.log('Received blockchain is valid. Replacing current blockchain with received blockchain')
@@ -34,12 +40,6 @@ const mustReplaceChain = newBlocks => {
   } else {
     console.log('Received blockchain invalid')
     return false
-  }
-}
-
-const addBlock = newBlock => {
-  if (Block.isValidNewBlock(newBlock, getLatestBlock())) {
-    blockchain.push(newBlock)
   }
 }
 
