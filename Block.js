@@ -13,7 +13,7 @@ module.exports = class Block {
     return CryptoJS.SHA256(index + previousHash + timestamp + data).toString()
   }
 
-  // OPTIMIZE: used only on Block.isValidNewBlock method. No need to static?
+  // OPTIMIZE: used only in Block.isValidNewBlock method. No need to static?
   static calculateHashForBlock (block) {
     return Block.calculateHash(block.index, block.previousHash, block.timestamp, block.data)
   }
@@ -32,5 +32,13 @@ module.exports = class Block {
     }
 
     return true
+  }
+
+  static generateNextBlock(blockData, previousBlock) {
+    const nextIndex = previousBlock.index + 1
+    const nextTimestamp = new Date().getTime()
+    const nextHash = Block.calculateHash(nextIndex, previousBlock.hash, nextTimestamp, blockData)
+
+    return new Block(nextIndex, previousBlock.hash, nextTimestamp, blockData, nextHash)
   }
 }

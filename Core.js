@@ -45,12 +45,8 @@ const mustReplaceChain = newBlocks => {
 
 const generateNextBlock = blockData => {
   const previousBlock = getLatestBlock()
-  const nextIndex = previousBlock.index + 1
-  // const nextTimestamp = new Date().getTime() / 1000
-  const nextTimestamp = new Date().getTime()
-  const nextHash = Block.calculateHash(nextIndex, previousBlock.hash, nextTimestamp, blockData)
 
-  return new Block(nextIndex, previousBlock.hash, nextTimestamp, blockData, nextHash)
+  return Block.generateNextBlock(blockData, previousBlock)
 }
 
 module.exports = {

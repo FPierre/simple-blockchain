@@ -8,4 +8,4 @@ POST /mine
 
 GET /peers
 
-POST /addPeer
+POST /peers

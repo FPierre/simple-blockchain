@@ -10,13 +10,16 @@ module.exports = class HTTPServer {
     this.app = express()
     this.app.use(bodyParser.json())
 
-    this.app.get('/blocks', (req, res) => res.send(JSON.stringify(Core.blockchain)))
+    this.app.get('/blocks', (req, res) => {
+      res.send(JSON.stringify(Core.blockchain)))
+    }
 
     this.app.post('/mine', (req, res) => {
       const newBlock = Core.generateNextBlock(req.body.data)
 
       Core.addBlock(newBlock)
       P2PServer.broadcast(Core.responseLatestMsg())
+
       console.log(`Block added: ${JSON.stringify(newBlock)}`)
       res.send()
     })
@@ -25,7 +28,7 @@ module.exports = class HTTPServer {
       res.send(sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort))
     })
 
-    this.app.post('/addPeer', (req, res) => {
+    this.app.post('/peers', (req, res) => {
       Peer.connectToPeers([req.body.peer])
       res.send()
     })
