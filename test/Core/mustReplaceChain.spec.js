@@ -1,7 +1,7 @@
 import test from 'ava'
 
-const Block = require('../../Block')
-const Core = require('../../Core')
+const Block = require('../../src/Block')
+const Core = require('../../src/Core')
 
 test.beforeEach(t => {
   const index = 1

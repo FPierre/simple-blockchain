@@ -1,7 +1,7 @@
 import test from 'ava'
 
-const Block = require('../../Block')
-const Core = require('../../Core')
+const Block = require('../../src/Block')
+const Core = require('../../src/Core')
 
 const index = 1
 const previousHash = '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7'

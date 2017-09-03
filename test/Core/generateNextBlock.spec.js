@@ -1,6 +1,6 @@
 import test from 'ava'
 
-const Core = require('../../Core')
+const Core = require('../../src/Core')
 
 // It is not possible to validate newBlock with hash comparaison:
 // timestamp is created in Core.generateNextBlock, hash can't be found outside

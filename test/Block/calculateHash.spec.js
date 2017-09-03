@@ -1,6 +1,6 @@
 import test from 'ava'
 
-const Block = require('../../Block')
+const Block = require('../../src/Block')
 
 test.beforeEach(t => {
   t.context.index = 1
