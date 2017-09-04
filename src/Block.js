@@ -1,44 +1,22 @@
-const CryptoJS = require('crypto-js')
+const SHA256 = require('crypto-js/sha256')
 
 module.exports = class Block {
-  constructor (index, previousHash, timestamp, data, hash) {
+  constructor (index, previousHash, timestamp, data) {
     this.index = index
-    this.previousHash = previousHash.toString()
+    this.previousHash = previousHash
     this.timestamp = timestamp
     this.data = data
-    this.hash = hash.toString()
+    this.hash = this.calculateHash()
   }
 
-  static calculateHash (index, previousHash, timestamp, data) {
-    return CryptoJS.SHA256(index + previousHash + timestamp + data).toString()
+  calculateHash () {
+    console.log(SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString())
+    return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString()
   }
 
-  // OPTIMIZE: used only in Block.isValidNewBlock method. No need to static?
-  static calculateHashForBlock (block) {
-    return Block.calculateHash(block.index, block.previousHash, block.timestamp, block.data)
-  }
-
-  static isValidNewBlock (newBlock, previousBlock) {
-    if (previousBlock.index + 1 !== newBlock.index) {
-      console.log('Invalid index')
-      return false
-    } else if (previousBlock.hash !== newBlock.previousHash) {
-      console.log('Invalid previousHash')
-      return false
-    } else if (Block.calculateHashForBlock(newBlock) !== newBlock.hash) {
-      console.log(typeof (newBlock.hash) + ' ' + typeof Block.calculateHashForBlock(newBlock))
-      console.log(`Invalid hash: ${Block.calculateHashForBlock(newBlock)} ${newBlock.hash}`)
-      return false
-    }
-
-    return true
-  }
-
-  static generateNextBlock(blockData, previousBlock) {
-    const nextIndex = previousBlock.index + 1
-    const nextTimestamp = new Date().getTime()
-    const nextHash = Block.calculateHash(nextIndex, previousBlock.hash, nextTimestamp, blockData)
-
-    return new Block(nextIndex, previousBlock.hash, nextTimestamp, blockData, nextHash)
+  isBlockValid (previousBlock) {
+    return (this.index === previousBlock.index + 1) &&
+           (this.previousHash === previousBlock.hash) &&
+           (this.hash === this.calculateHash())
   }
 }
