@@ -2,11 +2,12 @@ const Block = require('./Block')
 
 module.exports = class Blockchain {
   constructor () {
-    this.chain = [this.createGenesisBlock()]
+    this.genesisBlock = this.createGenesisBlock()
+    this.chain = [this.genesisBlock]
   }
 
   createGenesisBlock () {
-    return new Block(0, '04/09/2017', 'Genesis block', {})
+    return new Block(0, '', '04/09/2017', {})
   }
 
   getLatestBlock () {
@@ -16,26 +17,36 @@ module.exports = class Blockchain {
   addBlock (newBlock) {
     const previousBlock = this.getLatestBlock()
 
-    if (newBlock.isValidBlock(previousBlock)) {
+    if (newBlock.isValid(previousBlock)) {
       newBlock.hash = newBlock.calculateHash()
       this.chain.push(newBlock)
-
-      return true
     }
-
-    return false
   }
 
-  isChainValid () {
-    // If there is only Genesis block in chain
-    if (this.chain.length === 1) {
+  isValidChain () {
+    // console.log('isValidChain')
+
+    // Empty blockchain
+    if (!this.chain.length) {
+      return false
+    }
+
+    // Blockchain contains Genesis block only
+    // Following comparison is impossible: this.chain === [this.genesisBlock]
+    if (this.chain.length === 1 && this.chain[0] === this.genesisBlock) {
       return true
     }
 
-    this.chain.every((block, index, chain) => {
+    return this.chain.every((block, index, chain) => {
+      if (block === this.genesisBlock) {
+        return true
+      }
+
       const previousBlock = chain[index - 1]
 
-      return (block.hash === block.calculateHash()) && (block.previousHash === previousBlock.hash)
-    )}
+      if (previousBlock) {
+        return block.isValid(previousBlock)
+      }
+    })
   }
 }
